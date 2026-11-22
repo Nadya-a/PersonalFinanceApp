@@ -1,19 +1,16 @@
 public class Category {
     private String name;
-    private OperationType type;
     private Double budget; //null если бюджет не задан
 
-    //новая категория без бюджета
-    public Category(String name, OperationType type) {
+    //новая категория без указания значения бюджета
+    public Category(String name) {
         setName(name);
-        setType(type);
         this.budget = null;
     }
 
     //категория с бюджетом, бюджет приходит строкой из консоли
-    public Category(String name, OperationType type, String budget) {
+    public Category(String name, String budget) {
         setName(name);
-        setType(type);
         setBudget(budget);
     }
 
@@ -21,7 +18,6 @@ public class Category {
     public String toString() {
         return "Category{" +
                 "name='" + name + '\'' +
-                ", type=" + type +
                 ", budget=" + budget +
                 '}';
     }
@@ -29,10 +25,6 @@ public class Category {
     // Геттеры (чтение)
     public String getName() {
         return name;
-    }
-
-    public OperationType getType() {
-        return type;
     }
 
     public Double getBudget() {
@@ -47,21 +39,8 @@ public class Category {
         this.name = name.trim();
     }
 
-    public void setType(OperationType type) {
-        if (type == null) {
-            throw new IllegalArgumentException("Тип категории не задан!");
-        }
-        this.type = type;
-    }
-
     //если пустая строка то бюджет не задан
     public void setBudget(String budget) {
-        if (type == OperationType.INCOME) {
-            System.out.println("Для категории доходов бюджет не задается");
-            this.budget = null;
-            return;
-        }
-
         if (budget == null || budget.trim().isEmpty()) {
             this.budget = null;
             return;

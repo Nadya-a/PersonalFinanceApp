@@ -14,7 +14,7 @@ public class Operation {
         setDate();
     }
 
-    // Конструктор для чтения операции из файла
+    // Конструктор для чтения операции  из файла
     public Operation(String amount, OperationType type, String categoryName, String date) {
         setAmount(amount);
         setType(type);

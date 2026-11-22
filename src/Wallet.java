@@ -43,7 +43,7 @@ public class Wallet {
     // Сеттеры для редактирования с проверками
     public void setUUID(String uuid) {
         if (uuid == null || uuid.trim().isEmpty()) {
-            throw new IllegalArgumentException("Идентефикатор пользователя некорректен!");
+            throw new IllegalArgumentException("Идентификатор пользователя некорректен!");
         }
         this.uuid = uuid;
     }

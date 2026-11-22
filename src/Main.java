@@ -8,11 +8,7 @@ public class Main {
 
         while (true) {
             if (currentUser == null) {
-                System.out.println("1. Зарегистрироваться");
-                System.out.println("2. Войти");
-                System.out.println("0. Выход");
-                System.out.println("Введите номер действия, которое хотите совершить: ");
-
+                printAuthMenu();
                 String choice = input.nextLine().trim();
 
                 if (choice.equals("1")) {
@@ -26,11 +22,7 @@ public class Main {
                     System.out.println("Введите номер из пункта меню");
                 }
             } else {
-                System.out.println("--- Вы вошли как " + currentUser.getUsername() + " ---\n");
-                System.out.println("1. Выйти из аккаунта");
-                System.out.println("0. Выйти из программы");
-                System.out.println("Введите номер действия, которое хотите совершить: ");
-
+                printFinanceMenu(currentUser);
                 String choice = input.nextLine().trim();
 
                 if (choice.equals("1")) {
@@ -40,14 +32,28 @@ public class Main {
                     System.out.println("Программа заканчивает свою работу...");
                     break;
                 } else {
-                    System.out.println("Введите номер из пункта меню \n");
+                    System.out.println("Введите номер из пункта меню");
                 }
             }
         }
     }
 
+    public static void printAuthMenu() {
+        System.out.println("1. Зарегистрироваться");
+        System.out.println("2. Войти");
+        System.out.println("0. Выход");
+        System.out.println("Введите номер действия, которое хотите совершить: ");
+    }
+
+    public static void printFinanceMenu(User currentUser) {
+        System.out.println("Вы вошли как " + currentUser.getUsername());
+        System.out.println("1. Выйти из аккаунта");
+        System.out.println("0. Выход");
+        System.out.println("Введите номер действия, которое хотите совершить: ");
+    }
+
     public static void register(ConsoleAuth auth, Scanner input) {
-        System.out.print("Введите имя пользователя: ");
+        System.out.print("Введите новое имя пользователя: ");
         String username = input.nextLine().trim();
 
         System.out.print("Введите пароль: ");
@@ -75,7 +81,7 @@ public class Main {
 
         User user = auth.findUser(username, password);
         if (user != null) {
-            System.out.println("Авторизация успешна! Привет, " + user.getUsername() + "! \n");
+            System.out.println("Авторизация успешна! Привет, " + user.getUsername() + " ! \n");
             return user;
         }
 
