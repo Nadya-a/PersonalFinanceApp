@@ -26,9 +26,9 @@ public class Main {
                     System.out.println("Введите номер из пункта меню");
                 }
             } else {
-                System.out.println("Вы вошли как " + currentUser.getUsername());
+                System.out.println("--- Вы вошли как " + currentUser.getUsername() + " ---\n");
                 System.out.println("1. Выйти из аккаунта");
-                System.out.println("0. Выход");
+                System.out.println("0. Выйти из программы");
                 System.out.println("Введите номер действия, которое хотите совершить: ");
 
                 String choice = input.nextLine().trim();
@@ -40,21 +40,21 @@ public class Main {
                     System.out.println("Программа заканчивает свою работу...");
                     break;
                 } else {
-                    System.out.println("Введите номер из пункта меню");
+                    System.out.println("Введите номер из пункта меню \n");
                 }
             }
         }
     }
 
     public static void register(ConsoleAuth auth, Scanner input) {
-        System.out.print("Введите новое имя пользователя: ");
+        System.out.print("Введите имя пользователя: ");
         String username = input.nextLine().trim();
 
-        System.out.print("Введите новый пароль: ");
+        System.out.print("Введите пароль: ");
         String password = input.nextLine().trim();
 
         if (username.isEmpty() || password.isEmpty()) {
-            System.out.println("Логин и пароль не могут быть пустыми");
+            System.out.println("Логин и пароль не могут быть пустыми \n");
             return;
         }
 
@@ -62,7 +62,7 @@ public class Main {
         if (auth.addUser(user)) {
             System.out.println("Регистрация успешна!");
         } else {
-            System.out.println("Пользователь с таким именем уже существует");
+            System.out.println("Пользователь с таким именем уже существует \n");
         }
     }
 
@@ -75,11 +75,11 @@ public class Main {
 
         User user = auth.findUser(username, password);
         if (user != null) {
-            System.out.println("Авторизация успешна! Привет, " + user.getUsername() + "!");
+            System.out.println("Авторизация успешна! Привет, " + user.getUsername() + "! \n");
             return user;
         }
 
-        System.out.println("Неверный логин или пароль");
+        System.out.println("Неверный логин или пароль! Проверьте введенные данные \n");
         return null;
     }
 }
