@@ -25,7 +25,10 @@ public class Main {
                 printFinanceMenu(currentUser);
                 String choice = input.nextLine().trim();
 
-                if (choice.equals("1")) {
+                if (choice.equals("1") || choice.equals("2") || choice.equals("3")
+                        || choice.equals("4") || choice.equals("5") || choice.equals("6")) {
+                    // пункты меню пока без реализации
+                } else if (choice.equals("7")) {
                     System.out.println("Вы вышли из аккаунта " + currentUser.getUsername());
                     currentUser = null;
                 } else if (choice.equals("0")) {
@@ -47,8 +50,14 @@ public class Main {
 
     public static void printFinanceMenu(User currentUser) {
         System.out.println("Вы вошли как " + currentUser.getUsername());
-        System.out.println("1. Выйти из аккаунта");
-        System.out.println("0. Выход");
+        System.out.println("1. Посмотреть баланс");
+        System.out.println("2. Посмотреть историю операций");
+        System.out.println("3. Добавить операцию");
+        System.out.println("4. Добавить категорию");
+        System.out.println("5. Установить бюджет на категорию");
+        System.out.println("6. Показать сводку");
+        System.out.println("7. Выйти из аккаунта");
+        System.out.println("0. Выйти из программы");
         System.out.println("Введите номер действия, которое хотите совершить: ");
     }
 
