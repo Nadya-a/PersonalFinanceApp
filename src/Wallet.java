@@ -3,8 +3,12 @@ import java.util.ArrayList;
 public class Wallet {
     private String uuid;
     private double balance;
-    private ArrayList<Operation> operations;
-    private ArrayList<Category> categories;
+    private ArrayList<Operation> operations = new ArrayList<>();
+    private ArrayList<Category> categories = new ArrayList<>();
+
+    // для чтения из JSON
+    public Wallet() {
+    }
 
     public Wallet(String uuid) {
         setUUID(uuid);
@@ -38,6 +42,22 @@ public class Wallet {
 
     public ArrayList<Category> getCategories() {
         return categories;
+    }
+
+    public void setOperations(ArrayList<Operation> operations) {
+        if (operations == null) {
+            this.operations = new ArrayList<>();
+        } else {
+            this.operations = operations;
+        }
+    }
+
+    public void setCategories(ArrayList<Category> categories) {
+        if (categories == null) {
+            this.categories = new ArrayList<>();
+        } else {
+            this.categories = categories;
+        }
     }
 
     // Сеттеры для редактирования с проверками

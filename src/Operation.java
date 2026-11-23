@@ -6,6 +6,10 @@ public class Operation {
     private String categoryName;
     private String date; //строку проще писать в JSON
 
+    // для чтения из JSON
+    public Operation() {
+    }
+
     // Конструктор новой операции
     public Operation(String amount, OperationType type, String categoryName) {
         setAmount(amount);
@@ -77,7 +81,9 @@ public class Operation {
 
     public void setCategoryName(String categoryName) {
         if (categoryName == null || categoryName.trim().isEmpty()) {
-            throw new IllegalArgumentException("Категория операции не может быть пустой!");
+            // throw new IllegalArgumentException("Категория операции не может быть пустой!");
+            this.categoryName = "";
+            return;
         }
         this.categoryName = categoryName.trim();
     }

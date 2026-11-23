@@ -2,6 +2,10 @@ public class Category {
     private String name;
     private Double budget; //null если бюджет не задан
 
+    // для чтения из JSON
+    public Category() {
+    }
+
     //новая категория без указания значения бюджета
     public Category(String name) {
         setName(name);
