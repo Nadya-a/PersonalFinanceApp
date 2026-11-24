@@ -106,4 +106,16 @@ public class Wallet {
         }
         return null;
     }
+
+    // сумма расходов по категории
+    public double getExpenseSumByCategory(String categoryName) {
+        double sum = 0;
+        for (Operation operation : operations) {
+            if (operation.getType() == OperationType.EXPENSE
+                    && operation.getCategoryName().equals(categoryName)) {
+                sum = sum + operation.getAmount();
+            }
+        }
+        return sum;
+    }
 }

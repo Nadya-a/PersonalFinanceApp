@@ -81,9 +81,7 @@ public class Operation {
 
     public void setCategoryName(String categoryName) {
         if (categoryName == null || categoryName.trim().isEmpty()) {
-            // throw new IllegalArgumentException("Категория операции не может быть пустой!");
-            this.categoryName = "";
-            return;
+            throw new IllegalArgumentException("Категория операции не может быть пустой!");
         }
         this.categoryName = categoryName.trim();
     }

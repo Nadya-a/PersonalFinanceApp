@@ -151,11 +151,32 @@ public class Main {
             return;
         }
 
+        System.out.println("Нужен бюджет на данную категорию?");
+        System.out.println("1. Да");
+        System.out.println("2. Нет");
+        System.out.print("Ваш выбор: ");
+        String budgetChoice = input.nextLine().trim();
+
+        Category category;
         try {
-            Category category = new Category(name);
+            if (budgetChoice.equals("1")) {
+                System.out.print("Введите размер бюджета: ");
+                String budget = input.nextLine().trim();
+                category = new Category(name, budget);
+            } else if (budgetChoice.equals("2")) {
+                category = new Category(name);
+            } else {
+                System.out.println("Введите номер из пункта меню");
+                return;
+            }
+
             if (wallet.addCategory(category)) {
                 walletService.saveWallet(wallet);
-                System.out.println("Категория \"" + name + "\" добавлена!\n");
+                if (category.getBudget() != null) {
+                    System.out.println("Категория \"" + name + "\" добавлена с бюджетом в " + category.getBudget() + "!\n");
+                } else {
+                    System.out.println("Категория \"" + name + "\" добавлена без обраничений по бюджету!\n");
+                }
             }
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
@@ -181,11 +202,51 @@ public class Main {
         System.out.print("Введите сумму: ");
         String amount = input.nextLine().trim();
 
+        if (wallet.getCategories().isEmpty()) {
+            System.out.println("Сначала добавьте категорию через пункт меню 4");
+            return;
+        }
+
+        System.out.println("Доступные категории:");
+        int categoryNumber = 1;
+        for (Category category : wallet.getCategories()) {
+            System.out.println(categoryNumber + ". " + category.getName());
+            categoryNumber++;
+        }
+
+        System.out.print("Введите номер категории: ");
+        String categoryChoice = input.nextLine().trim();
+
+        int selectedNumber;
         try {
-            Operation operation = new Operation(amount, type, "");
+            selectedNumber = Integer.parseInt(categoryChoice);
+        } catch (NumberFormatException e) {
+            System.out.println("Нужно ввести номер категории");
+            return;
+        }
+
+        if (selectedNumber < 1 || selectedNumber > wallet.getCategories().size()) {
+            System.out.println("Категории с таким номером нет");
+            return;
+        }
+
+        String categoryName = wallet.getCategories().get(selectedNumber - 1).getName();
+
+        try {
+            Operation operation = new Operation(amount, type, categoryName);
             wallet.addOperation(operation);
             walletService.saveWallet(wallet);
             System.out.println("Операция добавлена!");
+
+            if (type == OperationType.EXPENSE) {
+                Category category = wallet.findCategory(categoryName);
+                if (category != null && category.getBudget() != null) {
+                    double spent = wallet.getExpenseSumByCategory(categoryName);
+                    if (spent > category.getBudget()) {
+                        System.out.println("!!! Внимание: превышен бюджет по данной категории !!!");
+                    }
+                }
+            }
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
         }
