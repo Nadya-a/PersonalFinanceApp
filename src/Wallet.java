@@ -107,6 +107,38 @@ public class Wallet {
         return null;
     }
 
+    public double getTotalIncome() {
+        double sum = 0;
+        for (Operation operation : operations) {
+            if (operation.getType() == OperationType.INCOME) {
+                sum = sum + operation.getAmount();
+            }
+        }
+        return sum;
+    }
+
+    public double getTotalExpense() {
+        double sum = 0;
+        for (Operation operation : operations) {
+            if (operation.getType() == OperationType.EXPENSE) {
+                sum = sum + operation.getAmount();
+            }
+        }
+        return sum;
+    }
+
+    // сумма доходов по категории
+    public double getIncomeSumByCategory(String categoryName) {
+        double sum = 0;
+        for (Operation operation : operations) {
+            if (operation.getType() == OperationType.INCOME
+                    && operation.getCategoryName().equals(categoryName)) {
+                sum = sum + operation.getAmount();
+            }
+        }
+        return sum;
+    }
+
     // сумма расходов по категории
     public double getExpenseSumByCategory(String categoryName) {
         double sum = 0;

@@ -8,8 +8,8 @@ public class Main {
         User currentUser = null;
         Wallet currentWallet = null;
 
-        label:
-        while (true) {
+        boolean work = true;
+        while (work) {
             if (currentUser == null) {
                 printAuthMenu();
                 String choice = input.nextLine().trim();
@@ -26,7 +26,8 @@ public class Main {
                         break;
                     case "0":
                         System.out.println("Программа заканчивает свою работу...");
-                        break label;
+                        work = false;
+                        break;
                     default:
                         System.out.println("Введите номер из пункта меню");
                         break;
@@ -51,10 +52,9 @@ public class Main {
                         addCategory(currentWallet, walletService, input);
                         break;
                     case "5":
-                    case "6":
-                        // пункты меню пока без реализации
+                        showSummary(currentWallet);
                         break;
-                    case "7":
+                    case "6":
                         walletService.saveWallet(currentWallet);
                         System.out.println("Вы вышли из аккаунта " + currentUser.getUsername());
                         currentUser = null;
@@ -63,7 +63,8 @@ public class Main {
                     case "0":
                         walletService.saveWallet(currentWallet);
                         System.out.println("Программа заканчивает свою работу...");
-                        break label;
+                        work = false;
+                        break;
                     default:
                         System.out.println("Введите номер из пункта меню");
                         break;
@@ -85,9 +86,8 @@ public class Main {
         System.out.println("2. Посмотреть историю операций");
         System.out.println("3. Добавить операцию");
         System.out.println("4. Добавить категорию");
-        System.out.println("5. Установить бюджет на категорию");
-        System.out.println("6. Показать сводку");
-        System.out.println("7. Выйти из аккаунта");
+        System.out.println("5. Показать сводку");
+        System.out.println("6. Выйти из аккаунта");
         System.out.println("0. Выйти из программы");
         System.out.println("Введите номер действия, которое хотите совершить: ");
     }
@@ -138,6 +138,70 @@ public class Main {
                     + " | " + operation.getAmount()
                     + " | " + category);
             number++;
+        }
+        System.out.println();
+    }
+
+    public static void showSummary(Wallet wallet) {
+        System.out.println("\n=== Сводка доходов и расходов ===");
+
+        double totalIncome = 0;
+        double totalExpense = 0;
+        for (Operation operation : wallet.getOperations()) {
+            if (operation.getType() == OperationType.INCOME) {
+                totalIncome = totalIncome + operation.getAmount();
+            } else {
+                totalExpense = totalExpense + operation.getAmount();
+            }
+        }
+
+        System.out.println("Общий доход: " + totalIncome);
+        System.out.println("Общие расходы: " + totalExpense);
+
+        System.out.println("\nДоходы по категориям:");
+        for (Category category : wallet.getCategories()) {
+            double income = 0;
+            for (Operation operation : wallet.getOperations()) {
+                if (operation.getType() == OperationType.INCOME
+                        && operation.getCategoryName().equals(category.getName())) {
+                    income = income + operation.getAmount();
+                }
+            }
+            if (income > 0) {
+                System.out.println("- " + category.getName() + ": " + income);
+            }
+        }
+
+        System.out.println("\nРасходы по категориям:");
+        for (Category category : wallet.getCategories()) {
+            double expense = 0;
+            for (Operation operation : wallet.getOperations()) {
+                if (operation.getType() == OperationType.EXPENSE
+                        && operation.getCategoryName().equals(category.getName())) {
+                    expense = expense + operation.getAmount();
+                }
+            }
+
+            if (expense > 0) {
+                System.out.print("- " + category.getName() + ": " + expense);
+
+                if (category.getBudget() != null) {
+                    System.out.print(" | бюджет: " + category.getBudget());
+                    if (expense > category.getBudget()) {
+                        System.out.print(" | превышен бюджет?: да");
+                    } else {
+                        System.out.print(" | превышен бюджет?: нет");
+                    }
+                } else {
+                    System.out.print(" | бюджет: не задан | превышен бюджет?: -");
+                }
+
+                System.out.println();
+            }
+        }
+
+        if (totalExpense > totalIncome) {
+            System.out.println("\n!!! Внимание: расходы превысили доходы !!!");
         }
         System.out.println();
     }
