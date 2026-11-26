@@ -144,29 +144,12 @@ public class Main {
 
     public static void showSummary(Wallet wallet) {
         System.out.println("\n=== Сводка доходов и расходов ===");
-
-        double totalIncome = 0;
-        double totalExpense = 0;
-        for (Operation operation : wallet.getOperations()) {
-            if (operation.getType() == OperationType.INCOME) {
-                totalIncome = totalIncome + operation.getAmount();
-            } else {
-                totalExpense = totalExpense + operation.getAmount();
-            }
-        }
-
-        System.out.println("Общий доход: " + totalIncome);
-        System.out.println("Общие расходы: " + totalExpense);
+        System.out.println("Общий доход: " + wallet.getTotalIncome());
+        System.out.println("Общие расходы: " + wallet.getTotalExpense());
 
         System.out.println("\nДоходы по категориям:");
         for (Category category : wallet.getCategories()) {
-            double income = 0;
-            for (Operation operation : wallet.getOperations()) {
-                if (operation.getType() == OperationType.INCOME
-                        && operation.getCategoryName().equals(category.getName())) {
-                    income = income + operation.getAmount();
-                }
-            }
+            double income = wallet.getIncomeSumByCategory(category.getName());
             if (income > 0) {
                 System.out.println("- " + category.getName() + ": " + income);
             }
@@ -174,13 +157,7 @@ public class Main {
 
         System.out.println("\nРасходы по категориям:");
         for (Category category : wallet.getCategories()) {
-            double expense = 0;
-            for (Operation operation : wallet.getOperations()) {
-                if (operation.getType() == OperationType.EXPENSE
-                        && operation.getCategoryName().equals(category.getName())) {
-                    expense = expense + operation.getAmount();
-                }
-            }
+            double expense = wallet.getExpenseSumByCategory(category.getName());
 
             if (expense > 0) {
                 System.out.print("- " + category.getName() + ": " + expense);
@@ -200,7 +177,7 @@ public class Main {
             }
         }
 
-        if (totalExpense > totalIncome) {
+        if (wallet.getTotalExpense() > wallet.getTotalIncome()) {
             System.out.println("\n!!! Внимание: расходы превысили доходы !!!");
         }
         System.out.println();
